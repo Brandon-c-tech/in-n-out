@@ -1,11 +1,11 @@
 "use client";
 
+import React, { useRef, useState, useEffect } from 'react'
 import { FileUploadComponent } from "@/components/FileUploadComponent";
 import { TemplateComponent } from "@/components/TemplateComponent";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UrlInputComponent } from "@/components/UrlInputComponent";
-import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 // 定义 FileData 接口类型
@@ -23,87 +23,101 @@ export default function Page() {
     "市场规模\n创始团队\n产品亮点\n竞争对手"
   ); // 定义 template 状态
 
+  // 创建 ref 以定位到 Result card
+  const resultRef = useRef<HTMLDivElement>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // 获取文件名列表
-    const fileNames = files.map((file) => file.name);
-
+    e.preventDefault()
+  
+    // 检查是否有至少一个文件或一个 URL
+    if (!urls && files.length === 0) {
+      setMarkdown('请至少提供一个文件或一个 URL')
+      return
+    }
+  
     try {
-      // 请求生成上传 URL
-      const response = await fetch(
-        "https://us-central1-moobius-412016.cloudfunctions.net/generate_upload_urls",
-        {
-          method: "POST",
+      let uniqueFileNames: string[] = []
+  
+      // 只有当 files 不为空时才执行文件上传
+      if (files.length > 0) {
+        // 获取文件名列表
+        const fileNames = files.map(file => file.name)
+  
+        // 请求生成上传 URL
+        const response = await fetch('https://us-central1-moobius-412016.cloudfunctions.net/generate_upload_urls', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ file_names: fileNames }),
+        })
+  
+        if (!response.ok) {
+          throw new Error('Failed to get upload URLs')
         }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to get upload URLs");
-      }
-
-      const uploadData: FileData[] = await response.json();
-
-      // 上传文件到对应的 URL
-      await Promise.all(
-        uploadData.map(async (fileData: FileData) => {
-          const file = files.find(
-            (f) => f.name === fileData.original_file_name
-          );
+  
+        const uploadData: FileData[] = await response.json()
+  
+        // 上传文件到对应的 URL
+        await Promise.all(uploadData.map(async (fileData: FileData) => {
+          const file = files.find(f => f.name === fileData.original_file_name)
           if (file) {
             await fetch(fileData.upload_url, {
-              method: "PUT",
+              method: 'PUT',
               headers: {
-                "Content-Type": file.type,
+                'Content-Type': file.type,
               },
               body: file,
-            });
+            })
           }
-        })
-      );
-
-      // 收集 unique 文件名
-      const uniqueFileNames = uploadData.map(
-        (fileData: FileData) => fileData.unique_file_name
-      );
-
-      // 准备请求体
-      const requestBody = {
-        template: template.split("\n"),
-        urls: urls.split("\n"),
-        files: uniqueFileNames,
-      };
-
-      // 发送请求到特定的 API
-      const finalResponse = await fetch(
-        "https://coursefinder.top/process",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      if (!finalResponse.ok) {
-        throw new Error("Failed to submit data");
+        }))
+  
+        // 收集 unique 文件名
+        uniqueFileNames = uploadData.map((fileData: FileData) => fileData.unique_file_name)
       }
-
-      setMarkdown("文件上传并提交成功！");
-
+  
+      // 准备请求体，如果没有文件，则 files 字段为空列表
+      const requestBody = {
+        template: template.split('\n'),
+        urls: urls.split('\n').filter(url => url.trim() !== ''), // 过滤掉空行
+        files: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
+      }
+  
+      // 发送请求到特定的 API
+      const finalResponse = await fetch('https://us-central1-moobius-412016.cloudfunctions.net/in-n-out-backend-test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      })
+  
+      if (!finalResponse.ok) {
+        throw new Error('Failed to submit data')
+      }
+  
+      setMarkdown('文件上传并提交成功！')
+  
       // 获取返回的 Markdown 内容
-      const markdownContent = await finalResponse.text();
-      setMarkdown(markdownContent);
+      const markdownContent = await finalResponse.text()
+      setMarkdown(markdownContent)
+  
     } catch (error) {
-      console.error("Error:", error);
-      setMarkdown("文件上传或提交失败，请重试。");
+      console.error('Error:', error)
+      setMarkdown('文件上传或提交失败，请重试。')
     }
-  };
+  }
+
+  // 在 markdown 内容更新后滚动到 Result card
+  useEffect(() => {
+    if (markdown && resultRef.current) {
+      // 使用 setTimeout 确保滚动在渲染后执行
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }, [markdown])
+  
 
   return (
     <div className="container mx-auto p-4">
