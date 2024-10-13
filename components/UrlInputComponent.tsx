@@ -14,7 +14,7 @@ export function UrlInputComponent({ urls, setUrls }: UrlInputComponentProps) {
       </CardHeader>
       <CardContent>
         <Textarea 
-          placeholder="Enter multiple URLs, one per line" 
+          placeholder={"Enter multiple URLs, one per line, like:\nwww.group-ultra.com"} 
           value={urls}
           onChange={(e) => setUrls(e.target.value)}
           className="min-h-[100px]"

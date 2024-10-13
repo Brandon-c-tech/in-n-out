@@ -17,14 +17,13 @@ interface FileData {
 }
 
 export default function Page() {
-  const [urls, setUrls] = useState("www.group-ultra.com");
+  const [urls, setUrls] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [markdown, setMarkdown] = useState("");
-  const [template, setTemplate] = useState(
-    "Market Size\nTeam Background\nProduct Highlight\nCompetitors"
-  ); // 定义 template 状态
+  const [template, setTemplate] = useState(""); // 定义 template 状态
   const [buttonText, setButtonText] = useState("Submit");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [progress, setProgress] = useState(false);
 
   // 创建 ref 以定位到 Result card
   const resultRef = useRef<HTMLDivElement>(null)
@@ -34,6 +33,7 @@ export default function Page() {
 
     // 点击后禁用按钮
     setButtonDisabled(true);
+    setProgress(true);
   
     // 检查是否有至少一个文件或一个 URL
     if (!urls && files.length === 0) {
@@ -106,7 +106,7 @@ export default function Page() {
         throw new Error('Failed to submit data')
       }
   
-      setMarkdown('文Files uploaded and submitted successfully!')
+      setMarkdown('Files uploaded and submitted successfully!')
       setButtonText("Try Again!"); // 更新按钮文本
   
       // 获取返回的 Markdown 内容
@@ -119,6 +119,7 @@ export default function Page() {
     } finally {
       // 无论成功或失败，最后都启用按钮
       setButtonDisabled(false);
+      setProgress(false);
     }
   }
 
@@ -146,6 +147,11 @@ export default function Page() {
           <Button type="submit" className="w-full" disabled={buttonDisabled}>
             {buttonText}
           </Button>
+          {progress && (
+            <div className="progress-bar mt-2">
+              <div className="progress"></div>
+            </div>
+          )}
         </form>
   
         {/* 显示 markdown 内容 */}

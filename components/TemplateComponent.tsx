@@ -19,7 +19,7 @@ export function TemplateComponent({ template, setTemplate }: TemplateComponentPr
         </CardHeader>
         <CardContent>
           <Textarea 
-            placeholder="Enter chapter template content, with a newline after each chapter title" 
+            placeholder={`Enter chapter template content, with a newline after each chapter title, like:\nMarket Size\nTeam Background\nProduct Highlight\nCompetitors`}
             value={template}
             onChange={(e) => setTemplate(e.target.value)}
             className="min-h-[100px]"
