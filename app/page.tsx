@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UrlInputComponent } from "@/components/UrlInputComponent";
 import ReactMarkdown from "react-markdown";
+import { pbkdf2 } from 'crypto';
 
 // 定义 FileData 接口类型
 interface FileData {
@@ -80,7 +81,7 @@ export default function Page() {
       const requestBody = {
         template: template.split('\n'),
         urls: urls.split('\n').filter(url => url.trim() !== ''), // 过滤掉空行
-        files: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
+        pdfs: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
       }
   
       // 发送请求到特定的 API
