@@ -23,6 +23,7 @@ export default function Page() {
   const [template, setTemplate] = useState(
     "市场规模\n创始团队\n产品亮点\n竞争对手"
   ); // 定义 template 状态
+  const [buttonText, setButtonText] = useState("提交"); // 新增状态变量
 
   // 创建 ref 以定位到 Result card
   const resultRef = useRef<HTMLDivElement>(null)
@@ -37,6 +38,8 @@ export default function Page() {
     }
   
     try {
+      setButtonText("文件上传中"); // 更新按钮文本
+      
       let uniqueFileNames: string[] = []
   
       // 只有当 files 不为空时才执行文件上传
@@ -83,6 +86,8 @@ export default function Page() {
         urls: urls.split('\n').filter(url => url.trim() !== ''), // 过滤掉空行
         files: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
       }
+
+      setButtonText("AI处理中，请稍等"); // 更新按钮文本
   
       // 发送请求到特定的 API
       const finalResponse = await fetch('https://coursefinder.top/process', {
@@ -98,6 +103,7 @@ export default function Page() {
       }
   
       setMarkdown('文件上传并提交成功！')
+      setButtonText("再来一次！"); // 更新按钮文本
   
       // 获取返回的 Markdown 内容
       const markdownContent = await finalResponse.text()
