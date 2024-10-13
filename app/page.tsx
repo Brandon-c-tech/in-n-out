@@ -17,7 +17,7 @@ interface FileData {
 }
 
 export default function Page() {
-  const [urls, setUrls] = useState("");
+  const [urls, setUrls] = useState("www.group-ultra.com");
   const [files, setFiles] = useState<File[]>([]);
   const [markdown, setMarkdown] = useState("");
   const [template, setTemplate] = useState(
@@ -130,6 +130,8 @@ export default function Page() {
         <link rel="icon" href="/writer.ico" />
       </Head>
       <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-6 text-center">In-N-Out Writer: Template & Reference</h1>
+
         <TemplateComponent setTemplate={setTemplate} template={template} />
   
         <form onSubmit={handleSubmit} className="space-y-6">

@@ -10,11 +10,11 @@ export function UrlInputComponent({ urls, setUrls }: UrlInputComponentProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>输入 URL</CardTitle>
+        <CardTitle>Enter URL</CardTitle>
       </CardHeader>
       <CardContent>
         <Textarea 
-          placeholder="请输入多个网址，每行一个" 
+          placeholder="Enter multiple URLs, one per line" 
           value={urls}
           onChange={(e) => setUrls(e.target.value)}
           className="min-h-[100px]"

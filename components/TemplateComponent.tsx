@@ -15,11 +15,11 @@ export function TemplateComponent({ template, setTemplate }: TemplateComponentPr
     <div className="mb-8">
       <Card>
         <CardHeader>
-          <CardTitle>模板</CardTitle>
+          <CardTitle>Template</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea 
-            placeholder="请输入章节模板内容，每一个章节标题后换行一次" 
+            placeholder="Enter chapter template content, with a newline after each chapter title" 
             value={template}
             onChange={(e) => setTemplate(e.target.value)}
             className="min-h-[100px]"
