@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UrlInputComponent } from "@/components/UrlInputComponent";
 import ReactMarkdown from "react-markdown";
-import { pbkdf2 } from 'crypto';
 
 // 定义 FileData 接口类型
 interface FileData {
@@ -117,13 +116,10 @@ export default function Page() {
 
   // 在 markdown 内容更新后滚动到 Result card
   useEffect(() => {
-    if (markdown && resultRef.current) {
-      // 使用 setTimeout 确保滚动在渲染后执行
-      setTimeout(() => {
-        resultRef.current?.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
+    if (resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [markdown])
+  }, [markdown])  // 添加 markdown 作为依赖
   
 
   return (
@@ -136,7 +132,7 @@ export default function Page() {
         <UrlInputComponent urls={urls} setUrls={setUrls} />
         <FileUploadComponent files={files} setFiles={setFiles} />
         <Button type="submit" className="w-full">
-          提交
+          {buttonText}
         </Button>
       </form>
 
@@ -146,7 +142,7 @@ export default function Page() {
           <CardHeader>
             <CardTitle>Result</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent ref={resultRef}>
             <div className="prose">
               <ReactMarkdown>{markdown}</ReactMarkdown>
             </div>
