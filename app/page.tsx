@@ -81,7 +81,7 @@ export default function Page() {
       const requestBody = {
         template: template.split('\n'),
         urls: urls.split('\n').filter(url => url.trim() !== ''), // 过滤掉空行
-        pdfs: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
+        files: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
       }
   
       // 发送请求到特定的 API
