@@ -23,13 +23,17 @@ export default function Page() {
   const [template, setTemplate] = useState(
     "Market Size\nTeam Background\nProduct Highlight\nCompetitors"
   ); // 定义 template 状态
-  const [buttonText, setButtonText] = useState("Submit"); // 新增状态变量
+  const [buttonText, setButtonText] = useState("Submit");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   // 创建 ref 以定位到 Result card
   const resultRef = useRef<HTMLDivElement>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // 点击后禁用按钮
+    setButtonDisabled(true);
   
     // 检查是否有至少一个文件或一个 URL
     if (!urls && files.length === 0) {
@@ -112,6 +116,9 @@ export default function Page() {
     } catch (error) {
       console.error('Error:', error)
       setMarkdown('File upload or submission failed, please try again.')
+    } finally {
+      // 无论成功或失败，最后都启用按钮
+      setButtonDisabled(false);
     }
   }
 
@@ -127,7 +134,6 @@ export default function Page() {
     <>
       <Head>
         <title>In-N-Out Writer: Template & Reference</title>
-        <link rel="icon" href="/writer.ico" />
       </Head>
       <div className="container mx-auto p-4">
         <h1 className="text-3xl font-bold mb-6 text-center">In-N-Out Writer: Template & Reference</h1>
@@ -137,7 +143,7 @@ export default function Page() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <UrlInputComponent urls={urls} setUrls={setUrls} />
           <FileUploadComponent files={files} setFiles={setFiles} />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={buttonDisabled}>
             {buttonText}
           </Button>
         </form>
