@@ -84,7 +84,7 @@ export default function Page() {
       }
   
       // 发送请求到特定的 API
-      const finalResponse = await fetch('https://us-central1-moobius-412016.cloudfunctions.net/in-n-out-backend-test', {
+      const finalResponse = await fetch('https://coursefinder.top/process', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
