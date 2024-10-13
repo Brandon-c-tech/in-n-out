@@ -1,5 +1,6 @@
 "use client";
 
+import Head from 'next/head';
 import React, { useRef, useState, useEffect } from 'react'
 import { FileUploadComponent } from "@/components/FileUploadComponent";
 import { TemplateComponent } from "@/components/TemplateComponent";
@@ -123,35 +124,39 @@ export default function Page() {
   
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">In-N-Out Writer: Template & Reference</h1>
-
-      <TemplateComponent setTemplate={setTemplate} template={template} />
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <UrlInputComponent urls={urls} setUrls={setUrls} />
-        <FileUploadComponent files={files} setFiles={setFiles} />
-        <Button type="submit" className="w-full">
-          {buttonText}
-        </Button>
-      </form>
-
-      {/* 显示 markdown 内容 */}
-      {markdown && (
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Result</CardTitle>
-          </CardHeader>
-          <CardContent ref={resultRef}>
-            <div className="prose">
-              <ReactMarkdown>{markdown}</ReactMarkdown>
-              <Button onClick={() => navigator.clipboard.writeText(markdown)} className="mt-2">
-                Copy
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
+    <>
+      <Head>
+        <title>In-N-Out Writer: Template & Reference</title>
+        <link rel="icon" href="/writer.ico" />
+      </Head>
+      <div className="container mx-auto p-4">
+        <TemplateComponent setTemplate={setTemplate} template={template} />
+  
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <UrlInputComponent urls={urls} setUrls={setUrls} />
+          <FileUploadComponent files={files} setFiles={setFiles} />
+          <Button type="submit" className="w-full">
+            {buttonText}
+          </Button>
+        </form>
+  
+        {/* 显示 markdown 内容 */}
+        {markdown && (
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Result</CardTitle>
+            </CardHeader>
+            <CardContent ref={resultRef}>
+              <div className="prose">
+                <ReactMarkdown>{markdown}</ReactMarkdown>
+                <Button onClick={() => navigator.clipboard.writeText(markdown)} className="mt-2">
+                  Copy
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </>
   );
 }
