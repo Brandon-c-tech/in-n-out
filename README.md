@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# In-N-Out Writer: Template & Reference
 
-## Getting Started
+In-N-Out Writer is a web application designed to help users upload files and URLs, process them using AI, and generate markdown content based on a predefined template. This application is built using React and leverages various components for file uploads, URL inputs, and markdown rendering.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **File Upload**: Upload multiple files and generate unique file names for processing.
+- **URL Input**: Input multiple URLs for processing.
+- **Template Customization**: Define and customize templates for content generation.
+- **AI Processing**: Submit files and URLs to an AI service for processing and receive markdown content.
+- **Markdown Display**: Render and display the processed markdown content.
+- **Clipboard Copy**: Easily copy the generated markdown content to the clipboard.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Backend Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Users need to configure their own backend and can flexibly use custom AI workflows. The version we maintain is hosted at [in-n-out.top](https://in-n-out.top).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Components
 
-## Learn More
+- **FileUploadComponent**: Handles file selection and uploads.
+- **UrlInputComponent**: Manages URL input and validation.
+- **TemplateComponent**: Allows users to set and modify the content template.
+- **Button**: A reusable button component for form submission and actions.
+- **Card**: Displays the result in a card format with markdown content.
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Brandon Chen: ccy@group-ultra.com
