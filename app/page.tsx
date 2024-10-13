@@ -20,9 +20,9 @@ export default function Page() {
   const [files, setFiles] = useState<File[]>([]);
   const [markdown, setMarkdown] = useState("");
   const [template, setTemplate] = useState(
-    "市场规模\n创始团队\n产品亮点\n竞争对手"
+    "Market Size\nTeam Background\nProduct Highlight\nCompetitors"
   ); // 定义 template 状态
-  const [buttonText, setButtonText] = useState("提交"); // 新增状态变量
+  const [buttonText, setButtonText] = useState("Submit"); // 新增状态变量
 
   // 创建 ref 以定位到 Result card
   const resultRef = useRef<HTMLDivElement>(null)
@@ -32,12 +32,12 @@ export default function Page() {
   
     // 检查是否有至少一个文件或一个 URL
     if (!urls && files.length === 0) {
-      setMarkdown('请至少提供一个文件或一个 URL')
+      setMarkdown('Please provide at least one file or one URL')
       return
     }
   
     try {
-      setButtonText("文件上传中"); // 更新按钮文本
+      setButtonText("Uploading files"); // 更新按钮文本
       
       let uniqueFileNames: string[] = []
   
@@ -86,7 +86,7 @@ export default function Page() {
         files: uniqueFileNames, // 如果 files 为空，uniqueFileNames 就是空列表
       }
 
-      setButtonText("AI处理中，请稍等"); // 更新按钮文本
+      setButtonText("Processing with AI, please wait"); // 更新按钮文本
   
       // 发送请求到特定的 API
       const finalResponse = await fetch('https://coursefinder.top/process', {
@@ -101,8 +101,8 @@ export default function Page() {
         throw new Error('Failed to submit data')
       }
   
-      setMarkdown('文件上传并提交成功！')
-      setButtonText("再来一次！"); // 更新按钮文本
+      setMarkdown('文Files uploaded and submitted successfully!')
+      setButtonText("Try Again!"); // 更新按钮文本
   
       // 获取返回的 Markdown 内容
       const markdownContent = await finalResponse.text()
@@ -110,7 +110,7 @@ export default function Page() {
   
     } catch (error) {
       console.error('Error:', error)
-      setMarkdown('文件上传或提交失败，请重试。')
+      setMarkdown('File upload or submission failed, please try again.')
     }
   }
 
@@ -124,7 +124,7 @@ export default function Page() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">in-n-out</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">In-N-Out Writer: Template & Reference</h1>
 
       <TemplateComponent setTemplate={setTemplate} template={template} />
 
