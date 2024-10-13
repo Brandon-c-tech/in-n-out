@@ -32,7 +32,7 @@ export default function Page() {
     try {
       // 请求生成上传 URL
       const response = await fetch(
-        "http://34.31.54.253:5000/process",
+        "https://us-central1-moobius-412016.cloudfunctions.net/generate_upload_urls",
         {
           method: "POST",
           headers: {
