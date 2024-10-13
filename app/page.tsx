@@ -10,12 +10,14 @@ import { FileUploadComponent } from "@/components/FileUploadComponent"
 interface FileData {
   original_file_name: string;
   upload_url: string;
+  unique_file_name: string;
 }
 
 export default function Page() {
   const [urls, setUrls] = useState('')
   const [files, setFiles] = useState<File[]>([])
   const [markdown, setMarkdown] = useState('')
+  const [template, setTemplate] = useState('市场规模\n创始团队\n产品亮点\n竞争对手') // 定义 template 状态
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,7 +39,7 @@ export default function Page() {
         throw new Error('Failed to get upload URLs')
       }
 
-      const uploadData = await response.json()
+      const uploadData: FileData[] = await response.json()
 
       // 上传文件到对应的 URL
       await Promise.all(uploadData.map(async (fileData: FileData) => {
@@ -52,11 +54,39 @@ export default function Page() {
           })
         }
       }))
+      
+      // 收集 unique 文件名
+      const uniqueFileNames = uploadData.map((fileData: FileData) => fileData.unique_file_name)
 
-      setMarkdown('文件上传成功！')
+      // 准备请求体
+      const requestBody = {
+        template: template.split('\n'),
+        urls: urls.split('\n'),
+        files: uniqueFileNames,
+      }
+
+      // 发送请求到特定的 API
+      const finalResponse = await fetch('https://us-central1-moobius-412016.cloudfunctions.net/in-n-out-backend-test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+        },
+        body: JSON.stringify(requestBody),
+      })
+
+      if (!finalResponse.ok) {
+        throw new Error('Failed to submit data')
+      }
+
+      setMarkdown('文件上传并提交成功！')
+
+      // 获取返回的 Markdown 内容
+      const markdownContent = await finalResponse.text()
+      setMarkdown(markdownContent)
+
     } catch (error) {
-      console.error('Error uploading files:', error)
-      setMarkdown('文件上传失败，请重试。')
+      console.error('Error:', error)
+      setMarkdown('文件上传或提交失败，请重试。')
     }
   }
 
@@ -64,7 +94,10 @@ export default function Page() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-center">in-n-out</h1>
       
-      <TemplateComponent />
+      <TemplateComponent 
+        setTemplate={setTemplate} 
+        template={template}
+      />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <UrlInputComponent urls={urls} setUrls={setUrls} />

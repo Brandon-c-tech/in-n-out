@@ -1,15 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import React from 'react'
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function TemplateComponent() {
-  const [template, setTemplate] = useState(`市场规模
-创始团队
-产品亮点
-竞争对手`)
+// 定义 Props 类型
+interface TemplateComponentProps {
+  template: string;
+  setTemplate: React.Dispatch<React.SetStateAction<string>>;
+}
 
+export function TemplateComponent({ template, setTemplate }: TemplateComponentProps) {
   return (
     <div className="mb-8">
       <Card>
@@ -28,4 +29,3 @@ export function TemplateComponent() {
     </div>
   )
 }
-
