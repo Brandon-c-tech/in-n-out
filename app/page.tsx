@@ -80,7 +80,7 @@ export default function Page() {
 
       // 发送请求到特定的 API
       const finalResponse = await fetch(
-        "https://coursefinder.top",
+        "https://coursefinder.top/process",
         {
           method: "POST",
           headers: {
