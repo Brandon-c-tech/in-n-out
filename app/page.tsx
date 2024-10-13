@@ -80,7 +80,7 @@ export default function Page() {
 
       // 发送请求到特定的 API
       const finalResponse = await fetch(
-        "http://34.31.106.155:5000/process",
+        "https://34.31.106.155:5000/process",
         {
           method: "POST",
           headers: {
