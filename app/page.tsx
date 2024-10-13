@@ -145,6 +145,9 @@ export default function Page() {
           <CardContent ref={resultRef}>
             <div className="prose">
               <ReactMarkdown>{markdown}</ReactMarkdown>
+              <Button onClick={() => navigator.clipboard.writeText(markdown)} className="mt-2">
+                Copy
+              </Button>
             </div>
           </CardContent>
         </Card>
