@@ -1,7 +1,9 @@
 'use client'
 
+import ReactMarkdown from 'react-markdown'
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TemplateComponent } from "@/components/TemplateComponent"
 import { UrlInputComponent } from "@/components/UrlInputComponent"
 import { FileUploadComponent } from "@/components/FileUploadComponent"
@@ -69,7 +71,7 @@ export default function Page() {
       const finalResponse = await fetch('https://us-central1-moobius-412016.cloudfunctions.net/in-n-out-backend-test', {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       })
@@ -106,7 +108,16 @@ export default function Page() {
       </form>
 
       {/* 显示 markdown 内容 */}
-      {markdown && <div className="mt-4 p-4 bg-green-100 text-green-800">{markdown}</div>}
+      {markdown && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Result</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ReactMarkdown>{markdown}</ReactMarkdown>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
